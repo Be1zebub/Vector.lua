@@ -1,5 +1,7 @@
 # Vector.lua
-A Vector class
+A Vector3 class  
+Can be used to create 3d games & 2d games (use 3rd coordinate as depth)  
+I use this in gmod, luvit, love2d  
 
 ### Example:
 ![image](https://user-images.githubusercontent.com/34854689/210561252-46a0deac-1939-4550-959b-8803a8aea8e6.png)
