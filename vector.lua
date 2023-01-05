@@ -108,12 +108,12 @@ end
 
 function Vector:Normalize(len)
 	if len then
-		len = len / self:Length()
+		len = len / #self
 		self.x = self.x * len
 		self.y = self.y * len
 		self.z = self.z * len
 	else
-		len = self:Length()
+		len = #self
 		self.x = self.x / len
 		self.y = self.y / len
 		self.z = self.z / len
@@ -149,8 +149,7 @@ function Vector:Lerp(fraction, to)
 	return Vector(
 		Lerp(fraction, self.x, to.x),
 		Lerp(fraction, self.y, to.y),
-		Lerp(fraction, self.z, to.z),
-		self.z
+		Lerp(fraction, self.z, to.z)
 	)
 end
 
@@ -170,8 +169,7 @@ function Vector:Approach(change, to)
 	return Vector(
 		Approach(self.x, to.x, change),
 		Approach(self.y, to.y, change),
-		Approach(self.z, to.z, change),
-		self.z
+		Approach(self.z, to.z, change)
 	)
 end
 
