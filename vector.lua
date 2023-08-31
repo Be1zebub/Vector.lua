@@ -1,6 +1,6 @@
 -- from russia with love <3
 -- incredible-gmod.ru
--- https://github.com/Be1zebub
+-- https://github.com/Be1zebub/Vector.lua
 
 local Vector = {MetaName = "Vector"}
 
@@ -15,6 +15,10 @@ setmetatable(Vector, {__call = function(_, x, y, z)
 
 	return instance
 end})
+
+function Vector:Remove()
+	storage[self] = nil
+end
 
 local function IsVector(var)
 	return getmetatable(var) == Vector
@@ -170,6 +174,20 @@ function Vector:Approach(change, to)
 		Approach(self.x, to.x, change),
 		Approach(self.y, to.y, change),
 		Approach(self.z, to.z, change)
+	)
+end
+
+function Vector:WithInBBox(mins, maxs)
+	return
+		(self.x >= mins.x and self.x <= maxs.x) and
+		(self.y >= mins.y and self.y <= maxs.y) and
+		(self.z >= mins.z and self.z <= maxs.z)
+end
+
+function Vector:WithIn(a, b)
+	return self:WithInBBox(
+		{x = math.min(a.x, b.x), y = math.min(a.y, b.y), z = math.min(a.z, b.z)}, -- we could create a vector, but it's overhead - so I'll just create a table, it won't affect anything expect perf boost
+		{x = math.max(a.x, b.x), y = math.max(a.y, b.y), z = math.max(a.z, b.z)}
 	)
 end
 
