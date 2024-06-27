@@ -20,20 +20,32 @@ function Vector:Remove()
 	storage[self] = nil
 end
 
-local function IsVector(var)
+function IsVector(var)
 	return getmetatable(var) == Vector
 end
 
-local axis_whitelist = {[1] = true, [2] = true, [3] = true, x = true, y = true, z = true, abscissa = true, ordinate = true, applicate = true, abs = true, ord = true, app = true}
-local alias_map = {x = 1, y = 2, z = 3, abscissa = 1, ordinate = 2, applicate = 3, abs = 1, ord = 2, app = 3}
+local alias_map = {
+	x = 1, y = 2, z = 3,
+	[1] = 1, [2] = 2, [3] = 3,
+	abs = 1, ord = 2, app = 3,
+	abscissa = 1, ordinate = 2, applicate = 3
+}
 
 function Vector:__index(axis_or_method)
-	return storage[self][ alias_map[axis_or_method] or axis_or_method ] or Vector[axis_or_method]
+	local method = Vector[axis_or_method]
+	if method then return method end
+
+	local index = alias_map[axis_or_method]
+	if index == nil then return end
+
+	return storage[self][index] or 0
 end
 
 function Vector:__newindex(axis, value)
-	if axis_whitelist[axis] == nil then return end
-	storage[self][ alias_map[axis] or axis ] = value
+	axis = alias_map[axis]
+	if axis == nil then return end
+
+	storage[self][axis] = value
 end
 
 function Vector:__tostring()
@@ -93,9 +105,9 @@ end
 Vector.Length = Vector.__len
 
 function Vector:SetUnpacked(x, y, z)
-	self.x = x or self.x or 0
-	self.y = y or self.y or 0
-	self.z = z or self.z or 0
+	self.x = x or 0
+	self.y = y or 0
+	self.z = z or 0
 end
 
 function Vector:Unpack()
@@ -216,4 +228,4 @@ print(
 )
 ]]--
 
-return Vector, IsVector
+_G.Vector, _G.IsVector = Vector, IsVector
